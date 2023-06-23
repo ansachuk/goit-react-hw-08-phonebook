@@ -1,10 +1,11 @@
 import { useState } from "react";
-import css from "./LoginPage.module.scss";
+import css from "../LoginPage/LoginPage.module.scss";
 // import { useSelector } from "react-redux";
 import { Notify } from "notiflix";
 import { Link } from "react-router-dom";
 
-export default function LoginPage() {
+export default function SignUpPage() {
+	const [nickname, setNickname] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	// const contacts = useSelector(({ contacts }) => contacts.items);
@@ -19,6 +20,10 @@ export default function LoginPage() {
 		const { name, value } = e.currentTarget;
 
 		switch (name) {
+			case "nickname":
+				setNickname(value);
+				break;
+
 			case "email":
 				setEmail(value);
 				break;
@@ -55,9 +60,24 @@ export default function LoginPage() {
 
 	return (
 		<>
-			<h1 className={css.title}>Login</h1>
+			<h1 className={css.title}>Sign up</h1>
 
 			<form className={css.form} onSubmit={onFormSubmit}>
+				<label className={css.label}>
+					Nickname
+					<input
+						value={nickname}
+						onChange={onInputChange}
+						className={css.input}
+						type="text"
+						name="nickname"
+						pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+						title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+						autoComplete="off"
+						required
+					/>
+				</label>
+
 				<label className={css.label}>
 					Email
 					<input
@@ -74,6 +94,7 @@ export default function LoginPage() {
 						required
 					/>
 				</label>
+
 				<label className={css.label}>
 					Password
 					<input
@@ -89,11 +110,11 @@ export default function LoginPage() {
 					/>
 				</label>
 				<button className={css.submitButton} type="submit">
-					Login
+					Sign up
 				</button>
 
-				<Link className={css.link} to={"/signup"}>
-					Don't have account yet?
+				<Link className={css.link} to={"/login"}>
+					I already have account
 				</Link>
 			</form>
 		</>

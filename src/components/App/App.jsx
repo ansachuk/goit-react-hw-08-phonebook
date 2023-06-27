@@ -1,17 +1,45 @@
-import { Route, Routes } from "react-router-dom";
+import { Suspense, lazy } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 
-import ContactsPage from "pages/ContactsPage/ContactsPage";
-import LoginPage from "pages/LoginPage/LoginPage";
-import SignUpPage from "pages/RegestrationPage/SignUpPage";
+import PrivatRoute from "components/PrivatRoute/PrivatRoute";
+import PublicRoute from "components/PublicRoute/PublicRoute";
+import Loader from "components/Loader/Loader";
+
+const ContactsPage = lazy(() => import("pages/ContactsPage/ContactsPage"));
+const LoginPage = lazy(() => import("pages/LoginPage/LoginPage"));
+const RegisterPage = lazy(() => import("pages/RegisterPage/RegisterPage"));
 
 export function App() {
 	return (
-		<>
+		<Suspense fallback={<Loader />}>
 			<Routes>
-				<Route path="/" element={<ContactsPage />} />
-				<Route path="/signup" element={<SignUpPage />} />
-				<Route path="/login" element={<LoginPage />} />
+				<Route
+					path="/contacts"
+					element={
+						<PrivatRoute>
+							<ContactsPage />
+						</PrivatRoute>
+					}
+				/>
+
+				<Route
+					path="/register"
+					element={
+						<PublicRoute>
+							<RegisterPage />
+						</PublicRoute>
+					}
+				/>
+				<Route
+					path="/login"
+					element={
+						<PublicRoute>
+							<LoginPage />
+						</PublicRoute>
+					}
+				/>
+				<Route path="/*" element={<Navigate to="/login" />} />
 			</Routes>
-		</>
+		</Suspense>
 	);
 }

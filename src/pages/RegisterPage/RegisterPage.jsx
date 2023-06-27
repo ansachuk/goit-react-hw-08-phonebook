@@ -1,14 +1,16 @@
 import { useState } from "react";
+import css from "../LoginPage/LoginPage.module.scss";
+
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { login } from "redux/operations";
-
-import css from "./LoginPage.module.scss";
+import { signupUser } from "redux/operations";
 import { Notify } from "notiflix";
 
-export default function LoginPage() {
+export default function RegisterPage() {
+	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -16,6 +18,10 @@ export default function LoginPage() {
 		const { name, value } = e.currentTarget;
 
 		switch (name) {
+			case "name":
+				setName(value);
+				break;
+
 			case "email":
 				setEmail(value);
 				break;
@@ -34,7 +40,8 @@ export default function LoginPage() {
 
 		try {
 			await dispatch(
-				login({
+				signupUser({
+					name,
 					email,
 					password,
 				}),
@@ -48,9 +55,24 @@ export default function LoginPage() {
 
 	return (
 		<>
-			<h1 className={css.title}>Login</h1>
+			<h1 className={css.title}>Sign up</h1>
 
 			<form className={css.form} onSubmit={onFormSubmit}>
+				<label className={css.label}>
+					Name
+					<input
+						value={name}
+						onChange={onInputChange}
+						className={css.input}
+						type="text"
+						name="name"
+						pattern="[A-Za-zА-Яа-яЁё0-9\s]{2,}"
+						title="Requiring at least 2 characters"
+						autoComplete="off"
+						required
+					/>
+				</label>
+
 				<label className={css.label}>
 					Email
 					<input
@@ -65,6 +87,7 @@ export default function LoginPage() {
 						required
 					/>
 				</label>
+
 				<label className={css.label}>
 					Password
 					<input
@@ -73,18 +96,18 @@ export default function LoginPage() {
 						className={css.input}
 						type="password"
 						name="password"
-						pattern="(?=.*\d)(?=.*[a-zA-Z]).{6,}"
-						title="Requiring at least 6 characters with at least one digit and one letter"
+						pattern="(?=.*\d)(?=.*[a-zA-Z]).{7,}"
+						title="Requiring at least ! characters with at least one digit and one letter"
 						autoComplete="off"
 						required
 					/>
 				</label>
 				<button className={css.submitButton} type="submit">
-					Login
+					Sign up
 				</button>
 
-				<Link className={css.link} to={"/register"}>
-					Don't have an account yet?
+				<Link className={css.link} to={"/login"}>
+					I already an have account
 				</Link>
 			</form>
 		</>

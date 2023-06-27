@@ -1,38 +1,36 @@
-import { useEffect } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchContacts } from "redux/operations";
-import { getError, getIsLoading, getContacts } from "redux/selectors";
-
-import { Jelly } from "@uiball/loaders";
+import { fetchContacts, logout } from "redux/operations";
+import { selectContactsError, selectContactsIsLoading, selectContacts } from "redux/selectors";
+import Loader from "components/Loader/Loader";
 
 import ContactForm from "components/ContactForm/ContactForm";
-import Filter from "components/Filter/Filter";
-import ContactList from "components/ContactList/ContactList";
-
 import css from "./ContactsPage.module.scss";
+
+const Filter = lazy(() => import("components/Filter/Filter"));
+const ContactList = lazy(() => import("components/ContactList/ContactList"));
 
 export default function ContactsPage() {
 	const disp = useDispatch();
 
-	const contacts = useSelector(getContacts);
-	const isLoading = useSelector(getIsLoading);
-	const error = useSelector(getError);
+	const contacts = useSelector(selectContacts);
+	const isLoading = useSelector(selectContactsIsLoading);
+	const error = useSelector(selectContactsError);
 
 	useEffect(() => {
 		disp(fetchContacts());
 	}, [disp]);
+
 	return (
-		<>
+		<Suspense fallback={<Loader isLoading={isLoading} />}>
 			<h1 className={css.title}>Phone Book</h1>
 			<ContactForm />
 
 			{!error && (
 				<>
 					{isLoading === true ? (
-						<div className={css.backdrop} aria-live="polite" aria-busy={isLoading}>
-							<Jelly color="rgb(24, 166, 166)" size={200} speed={0.6} />
-						</div>
+						<Loader isLoading={isLoading} />
 					) : (
 						contacts.length > 0 && (
 							<>
@@ -45,7 +43,9 @@ export default function ContactsPage() {
 				</>
 			)}
 
-			<button className={css.logOutBtn}>Log out</button>
-		</>
+			<button onClick={disp(logout())} className={css.logOutBtn}>
+				Log out
+			</button>
+		</Suspense>
 	);
 }

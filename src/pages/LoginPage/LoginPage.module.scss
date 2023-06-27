@@ -1,6 +1,8 @@
 .title {
 	text-align: center;
 	font-size: 40px;
+
+	margin: 30px 0;
 }
 
 .form {
@@ -9,8 +11,10 @@
 	gap: 12px;
 
 	padding: 28px;
-	border: 1.5px solid rgb(65, 170, 97);
+
 	border-radius: 12px;
+
+	box-shadow: 1px 0 17px 3px #ffe6be;
 }
 
 .label {
@@ -52,7 +56,7 @@
 
 	background-color: teal;
 	border: 1px solid black;
-	border-radius: 10px;
+	border-radius: 20px;
 	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 
 	user-select: none;
@@ -63,10 +67,14 @@
 	&:hover {
 		background-color: rgb(1, 100, 100);
 	}
+
+	&:active {
+		background-color: rgb(0, 68, 68);
+	}
 }
 
 .link {
-	margin-top: 30px;
+	margin-top: 20px;
 	text-align: center;
 	color: #ffe4c4;
 

@@ -3,8 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "redux/operations";
 
-import css from "./LoginPage.module.scss";
 import { Notify } from "notiflix";
+
+import css from "./LoginPage.module.scss";
 
 export default function LoginPage() {
 	const [email, setEmail] = useState("");
@@ -42,7 +43,7 @@ export default function LoginPage() {
 
 			navigate("/contacts");
 		} catch (e) {
-			Notify.failure(e.message);
+			Notify.failure(e);
 		}
 	};
 

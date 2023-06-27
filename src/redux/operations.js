@@ -16,9 +16,9 @@ const fetchContacts = createAsyncThunk(`${contactsEndpoint}/fetchAll`, async (_,
 	}
 });
 
-const addContact = createAsyncThunk(`${contactsEndpoint}/addTask`, async ({ name, phone }, { rejectWithValue }) => {
+const addContact = createAsyncThunk(`${contactsEndpoint}/addTask`, async ({ name, phone: number }, { rejectWithValue }) => {
 	try {
-		const { data } = await axios.post(contactsEndpoint, { name, phone });
+		const { data } = await axios.post(contactsEndpoint, { name, number });
 		return data;
 	} catch (e) {
 		return rejectWithValue(e.message);
@@ -64,10 +64,10 @@ const login = createAsyncThunk("auth/login", async (cred, { rejectWithValue }) =
 	}
 });
 
-const logout = createAsyncThunk("auth/login", async (_, { rejectWithValue }) => {
+const logout = createAsyncThunk("auth/logout", async (_, { rejectWithValue }) => {
 	try {
 		const { data } = await axios.post(`${userAuthEndpoint}/logout`);
-		clearAuthJWTHeader(data.token);
+		clearAuthJWTHeader();
 		return data;
 	} catch (e) {
 		return rejectWithValue(e.message);

@@ -13,5 +13,6 @@ export const selectFilteredContacts = createSelector([selectContacts, selectFilt
 
 export const selectIsLoggedIn = ({ auth }) => auth.isLoggedIn;
 export const selectUser = ({ auth }) => auth.user;
-export const selectAuthIsLoading = ({ contacts }) => contacts.isLoading;
-export const selectAuthError = ({ contacts }) => contacts.error;
+export const selectToken = ({ auth }) => auth.token;
+export const selectAuthIsLoading = ({ auth }) => auth.isLoading;
+export const selectAuthError = ({ auth }) => auth.error;

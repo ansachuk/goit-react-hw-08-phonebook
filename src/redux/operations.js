@@ -74,4 +74,14 @@ const logout = createAsyncThunk("auth/logout", async (_, { rejectWithValue }) =>
 	}
 });
 
-export { fetchContacts, addContact, deleteContact, signupUser, login, logout };
+const refresh = createAsyncThunk("auth/refresh", async (token, { rejectWithValue }) => {
+	try {
+		setAuthJWTHeader(token);
+		const { data } = await axios.get(`${userAuthEndpoint}/current`);
+		return data;
+	} catch (e) {
+		return rejectWithValue(e.message);
+	}
+});
+
+export { fetchContacts, addContact, deleteContact, signupUser, login, logout, refresh };
